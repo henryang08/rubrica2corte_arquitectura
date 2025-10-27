@@ -64,28 +64,59 @@
         <div class="status-card">
             <h2>Base de Datos: MySQL. </h2>
             <?php
-            
-            $host_mysql = getenv('DB_HOST_MYSQL');
-            $user_mysql = getenv('DB_USER_MYSQL');
-            $pass_mysql = getenv('DB_PASS_MYSQL');
-            $db_mysql = "database-mysql"; // 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-            // conexión a MySQL 
-            $conn_mysql = mysqli_init();
-            mysqli_ssl_set($conn_mysql, NULL, NULL, NULL, NULL, NULL);
-            mysqli_real_connect($conn_mysql, $host_mysql, $user_mysql, $pass_mysql, $db_mysql, 3306, NULL, MYSQLI_CLIENT_SSL);
+echo "<p>🔹 Paso 1: Script PHP ejecutándose.</p>";
 
-            if ($conn_mysql->connect_error) {
-                echo "<p class='error'>❌ ERROR (MySQL): No se pudo conectar.</p>";
-                echo "<p>Detalle: " . htmlspecialchars($conn_mysql->connect_error) . "</p>";
-            } else {
-                echo "<p class='success'>✅ ÉXITO (MySQL): Conexión establecida.</p>";
-                echo "<p>Conectado a <code>" . htmlspecialchars($host_mysql) . "</code> como <code>" . htmlspecialchars($user_mysql) . "</code>.</p>";
-                $conn_mysql->close();
-            }
-            ?>
+$host_mysql = getenv('DB_HOST_MYSQL');
+$user_mysql = getenv('DB_USER_MYSQL');
+$pass_mysql = getenv('DB_PASS_MYSQL');
+$db_mysql   = "rubrica_db"; // tu base real
+
+echo "<p>🔹 Paso 2: Variables cargadas.</p>";
+echo "<pre>";
+echo "DB_HOST_MYSQL = " . ($host_mysql ?: '[vacío]') . "\n";
+echo "DB_USER_MYSQL = " . ($user_mysql ?: '[vacío]') . "\n";
+echo "DB_PASS_MYSQL = " . ($pass_mysql ? '[oculto por seguridad]' : '[vacío]') . "\n";
+echo "</pre>";
+
+$conn_mysql = mysqli_init();
+if (!$conn_mysql) {
+    echo "<p class='error'>❌ ERROR: mysqli_init() falló.</p>";
+    exit;
+}
+
+mysqli_ssl_set($conn_mysql, NULL, NULL, NULL, NULL, NULL);
+
+echo "<p>🔹 Paso 3: Intentando conexión...</p>";
+
+$connected = @mysqli_real_connect(
+    $conn_mysql,
+    $host_mysql,
+    $user_mysql,
+    $pass_mysql,
+    $db_mysql,
+    3306,
+    NULL,
+    MYSQLI_CLIENT_SSL
+);
+
+if (!$connected) {
+    echo "<p class='error'>❌ ERROR (MySQL): No se pudo conectar.</p>";
+    echo "<p>Detalle: " . mysqli_connect_error() . "</p>";
+} else {
+    echo "<p class='success'>✅ ÉXITO (MySQL): Conexión establecida.</p>";
+    echo "<p>Conectado a <code>$host_mysql</code> como <code>$user_mysql</code>.</p>";
+    mysqli_close($conn_mysql);
+}
+
+echo "<p>🔹 Paso 4: Fin del script.</p>";
+?>
+
         </div>
     </div>
 </body>
 
 </html>
+
