@@ -59,7 +59,7 @@
 <body>
     <div class="container">
         <h1>Prueba de Conexión (Ejercicio 3)</h1>
-        <p>Esta página (App Service) está intentando conectarse a la base de datos privada MySQL.</p>
+        <p>Esta pagina (App Service) está intentando conectarse a la base de datos privada MySQL.</p>
 
         <div class="status-card">
             <h2>Base de Datos: MySQL. </h2>
@@ -67,29 +67,29 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-echo "<p>🔹 Paso 1: Script PHP ejecutándose.</p>";
-
+echo "<p>Paso 1: Script PHP.</p>";
+// Variables de entorno
 $host_mysql = getenv('DB_HOST_MYSQL');
 $user_mysql = getenv('DB_USER_MYSQL');
 $pass_mysql = getenv('DB_PASS_MYSQL');
-$db_mysql   = "rubrica_db"; // tu base real
+$db_mysql   = "rubrica_db"; 
 
-echo "<p>🔹 Paso 2: Variables cargadas.</p>";
+echo "<p>Paso 2: Valores de las variables.</p>";
 echo "<pre>";
 echo "DB_HOST_MYSQL = " . ($host_mysql ?: '[vacío]') . "\n";
 echo "DB_USER_MYSQL = " . ($user_mysql ?: '[vacío]') . "\n";
-echo "DB_PASS_MYSQL = " . ($pass_mysql ? '[oculto por seguridad]' : '[vacío]') . "\n";
+echo "DB_PASS_MYSQL = " . ($pass_mysql ? '[oculto]' : '[vacío]') . "\n";
 echo "</pre>";
-
+/// Validacion del init del mysql
 $conn_mysql = mysqli_init();
 if (!$conn_mysql) {
-    echo "<p class='error'>❌ ERROR: mysqli_init() falló.</p>";
+    echo "<p class='error'>❌ ERROR: mysqli_init() fallo.</p>";
     exit;
 }
 
 mysqli_ssl_set($conn_mysql, NULL, NULL, NULL, NULL, NULL);
 
-echo "<p>🔹 Paso 3: Intentando conexión...</p>";
+echo "<p>Paso 3: Se intenta conectar </p>";
 
 $connected = @mysqli_real_connect(
     $conn_mysql,
@@ -103,15 +103,15 @@ $connected = @mysqli_real_connect(
 );
 
 if (!$connected) {
-    echo "<p class='error'>❌ ERROR (MySQL): No se pudo conectar.</p>";
+    echo "<p class='error'> ERROR (MySQL): No se pudo conectar.</p>";
     echo "<p>Detalle: " . mysqli_connect_error() . "</p>";
 } else {
-    echo "<p class='success'>✅ ÉXITO (MySQL): Conexión establecida.</p>";
+    echo "<p class='success'>EXITO (MySQL): Conexion establecida.</p>";
     echo "<p>Conectado a <code>$host_mysql</code> como <code>$user_mysql</code>.</p>";
     mysqli_close($conn_mysql);
 }
 
-echo "<p>🔹 Paso 4: Fin del script.</p>";
+echo "<p>Paso 4: Fin del script.</p>";
 ?>
 
         </div>
@@ -119,4 +119,5 @@ echo "<p>🔹 Paso 4: Fin del script.</p>";
 </body>
 
 </html>
+
 
