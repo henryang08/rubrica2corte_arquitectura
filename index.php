@@ -62,15 +62,15 @@
         <p>Esta página (App Service) está intentando conectarse a la base de datos privada MySQL.</p>
 
         <div class="status-card">
-            <h2>Base de Datos: MySQL</h2>
+            <h2>Base de Datos: MySQL. </h2>
             <?php
-            // ¡IMPORTANTE! Estos datos se leen de las "Variables de Entorno" del App Service
+            
             $host_mysql = getenv('DB_HOST_MYSQL');
             $user_mysql = getenv('DB_USER_MYSQL');
             $pass_mysql = getenv('DB_PASS_MYSQL');
-            $db_mysql = "test_db"; // <-- OJO: Cambia esto si tu base de datos tiene otro nombre
+            $db_mysql = "database-mysql"; // 
 
-            // Intentar conexión a MySQL (requiriendo SSL)
+            // conexión a MySQL 
             $conn_mysql = mysqli_init();
             mysqli_ssl_set($conn_mysql, NULL, NULL, NULL, NULL, NULL);
             mysqli_real_connect($conn_mysql, $host_mysql, $user_mysql, $pass_mysql, $db_mysql, 3306, NULL, MYSQLI_CLIENT_SSL);
@@ -87,4 +87,5 @@
         </div>
     </div>
 </body>
+
 </html>
